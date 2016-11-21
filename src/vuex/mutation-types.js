@@ -1,0 +1,13 @@
+/**
+ * Created by linxiaojie on 2016/11/21.
+ */
+
+export const REQ_BOOKS = 'REQ_BOOKS'
+export const RECEIVE_BOOKS = 'RECEIVE_BOOKS'
+export const SEARCH_BOOK = 'SEARCH_BOOK'
+export const RECEIVE_SEARCH_BOOK_DATA = 'RECEIVE_SEARCH_BOOK_DATA'
+export const REQ_BOOK_CHAPTERS = 'REQ_BOOK_CHAPTER'
+export const RECEIVE_BOOK_CHAPTERS = 'RECEIVE_BOOK_CHAPTER'
+export const REQ_BOOK_DETAIL = 'REQ_BOOK_DETAIL'
+export const RECEIVE_BOOK_DETAIL = 'RECEIVE_BOOK_DETAIL'
+export const DEL_BOOK_ITEM = 'DEL_BOOK_ITEM'
