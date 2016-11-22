@@ -17,9 +17,15 @@ const state = {
     update: '',
     description: '',
     chapterName: '',
-    index: '',
-    content: '',
-    chapters: []
+    chapters: [],
+    page: 1,
+    pageSize: 10,
+    totalPage: 0
+  },
+  reader: {
+    name: '',
+    index: 0,
+    text: ''
   }
 }
 
@@ -39,6 +45,13 @@ const mutations = {
   },
   [types.DEL_BOOK_ITEM] (state, {index}) {
     state.list.splice(index, 1)
+  },
+  [types.RE_BOOK_CONTENT] (state, {content}) {
+    _.each(content, (val, key) => {
+      if (_.has(state.detail.reader, key)) {
+        state.detail.reader[key] = val
+      }
+    })
   }
 }
 
