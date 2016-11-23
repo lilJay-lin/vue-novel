@@ -1,8 +1,6 @@
 <template>
   <div id="app">
-    <books></books>
-    <book-detail></book-detail>
-    <reader></reader>
+    <router-view></router-view>
   </div>
 </template>
 

@@ -7,7 +7,7 @@ import * as types from '../mutation-types.js'
 const base = '/novel'
 export const getAllBooks = ({commit}) => {
   return server.request({
-    url: base + '/book'
+    url: base
   }).then(({res: {list}}) => {
     commit(types.RECEIVE_BOOKS, {
       list
@@ -17,7 +17,7 @@ export const getAllBooks = ({commit}) => {
 
 export const getBookDetail = ({commit}, {name, link, source}) => {
   return server.request({
-    url: base + '/book/' + encodeURIComponent(name) + '?link=' + encodeURIComponent(link) + '&source=' + encodeURIComponent(source)
+    url: base + '/' + encodeURIComponent(name) + '?link=' + encodeURIComponent(link) + '&source=' + encodeURIComponent(source)
   }).then(({res: {book}}) => {
     commit(types.RECEIVE_BOOK_DETAIL, {
       detail: book
@@ -29,7 +29,7 @@ export const getBookContent = ({state, commit}, index) => {
   let detail = state.book.detail
   index = detail.page * detail.pageSize + index
   return server.request({
-    url: base + '/detail/' + encodeURIComponent(detail.name) + '/chapter/' + index
+    url: base + '/' + encodeURIComponent(detail.name) + '/chapter/' + index
   }).then(({res}) => {
     commit(types.RECEIVE_BOOK_DETAIL, {
       content: res
