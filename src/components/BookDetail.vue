@@ -3,7 +3,7 @@
     <ul class="collection">
       <template v-for="(chapter, index) in detail.chapters">
         <li class="collection-item" :key="index">
-          <a href="javascript:void(0)" @click="showChapterContent(index)">{{chapter.name}}</a>
+          <a href="javascript:void(0)" @click="showChapterContent(index + 1)">{{chapter.name}}</a>
         </li>
       </template>
     </ul>
