@@ -7,9 +7,8 @@ require('./assets/scss/materialize.config.scss')
 
 /* eslint-disable no-new */
 new Vue({
-  el: '#app',
   store,
   router,
   template: '<App/>',
   components: { App }
-})
+}).$mount('#app')

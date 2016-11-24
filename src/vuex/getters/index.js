@@ -3,5 +3,6 @@
  */
 import {combineObject} from '../../utils/helper.js'
 import * as novelGetters from './book.js'
+import * as loadingGetters from './loading.js'
 
-export default combineObject(novelGetters)
+export default combineObject(novelGetters, loadingGetters)

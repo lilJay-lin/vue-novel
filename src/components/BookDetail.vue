@@ -1,51 +1,30 @@
 <template>
-  <div>
-    <div class="loading" v-if="loading">
-      Loading...
-    </div>
-    <div v-if="error" class="error">
-      {{ error }}
-    </div>
-    <ul class="collection" v-if="success">
+  <Loading>
+    <ul class="collection">
       <template v-for="(chapter, index) in detail.chapters">
-        <li @click="getBookContent(index)" class="collection-item" :key="index">{{chapter.name}}</li>
+        <li class="collection-item" :key="index">
+          <a href="javascript:void(0)" @click="showChapterContent(index)">{{chapter.name}}</a>
+        </li>
       </template>
     </ul>
-  </div>
+  </Loading>
 </template>
 <script type="text/ecmascript-6">
+  import loadingMixins from '../mixins/loading'
   import {mapGetters, mapActions} from 'vuex'
   export default {
-    data () {
-      return {
-        loading: false,
-        success: false,
-        error: null
-      }
-    },
+    mixins: [loadingMixins],
     computed: mapGetters(['detail']),
     methods: {
-      ...mapActions(['getBookContent', 'getBookDetail']),
-      readerBook (chapter) {
+      ...mapActions(['getBookDetail']),
+      showChapterContent (chapter) {
+        let vm = this
+        vm.$router.push({name: 'bookChapter', params: {bookId: vm.$route.params.bookId, chapterIndex: chapter}})
       },
       fetchData () {
-        this.error = null
-        this.sucess = false
-        this.loading = true
-        this.getBookDetail().then(() => {
-          this.success = true
-        }, ({message}) => {
-          this.error = message
-        }).then(() => {
-          this.loadding = false
-        })
+        let vm = this
+        return vm.getBookDetail(vm.$route.params.bookId)
       }
-    },
-    created () {
-      this.fetchData()
-    },
-    watch: {
-      '$route': 'fetchData'
     }
   }
 </script>
