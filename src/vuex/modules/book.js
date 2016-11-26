@@ -27,12 +27,18 @@ const state = {
     title: '',
     index: '',
     text: ''
+  },
+  search: {
+    list: []
   }
 }
 
 const mutations = {
   [types.RECEIVE_BOOKS] (state, {list}) {
     state.list = list
+  },
+  [types.RECEIVE_SEARCH_BOOK_RES] (state, {list}) {
+    state.search.list = list
   },
   [types.RECEIVE_BOOK_CHAPTERS] (state, {chapters}) {
     state.detail.chapters = chapters

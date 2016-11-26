@@ -1,5 +1,6 @@
 <template>
   <div id="app">
+    <router-link :to="{name: 'searchBook'}" class="btn">搜索图书</router-link>
     <router-view></router-view>
   </div>
 </template>

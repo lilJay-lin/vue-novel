@@ -36,17 +36,45 @@ export const getBookDetail = ({state, commit}, id) => {
   })
 }
 */
-
-export const getBookDetail = ({state, commit}, id) => {
+export const searchBook = ({state, commit}, name) => {
   return server.request({
-    url: base + '/' + id
-  }).then(({res: {book}}) => {
-    commit(types.RECEIVE_BOOK_DETAIL, {
-      detail: book
+    url: base + '/search/' + name
+  }).then(({res: {list}}) => {
+    commit(types.RECEIVE_SEARCH_BOOK_RES, {
+      list
     })
   }, (res) => {
     return Promise.reject(res)
   })
+}
+
+function showBookDetail ({commit}, url) {
+  return server.request({
+    url
+  }).then(({res: {book}}) => {
+    commit(types.RECEIVE_BOOK_DETAIL, {
+      detail: book
+    })
+    return book
+  }, (res) => {
+    return Promise.reject(res)
+  })
+}
+
+/*
+* 通过ID搜索
+* */
+export const getBookDetail = (store, id) => {
+  return showBookDetail(store, base + '/' + id)
+}
+
+/*
+ * 通过关键字搜索
+ * */
+export const getBookDetailByName = (store, book) => {
+  const {name, href, source} = book
+  let url = base + '/new?name=' + encodeURIComponent(name) + '&link=' + encodeURIComponent(href) + '&source=' + encodeURIComponent(source)
+  return showBookDetail(store, url)
 }
 
 export const getBookContent = ({state, commit}, {id, index}) => {
