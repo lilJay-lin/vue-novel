@@ -3,7 +3,7 @@
  */
 import * as types from '../mutation-types.js'
 const state = {
-  status: true,
+  status: false,
   success: false,
   error: null
 }
