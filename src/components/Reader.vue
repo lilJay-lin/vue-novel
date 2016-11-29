@@ -1,8 +1,8 @@
 <template>
   <Loading>
-    <div>
-      <h3 class="left-align">{{reader.name}}</h3>
-      <div class="flow-text" v-html="reader.text"></div>
+    <div class="reader">
+      <h3 class="reader-title">{{reader.name}}</h3>
+      <div class="reader-content flow-text" v-html="reader.text"></div>
     </div>
   </Loading>
 </template>

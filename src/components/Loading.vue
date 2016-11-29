@@ -1,7 +1,7 @@
 <template>
-  <div>
+  <div class="loading-wrapper">
     <div class="loading" v-if="loading.status">
-      Loading...
+      数据加载中，请稍后...
     </div>
     <div v-if="loading.error" class="error">
       {{ loading.error }}

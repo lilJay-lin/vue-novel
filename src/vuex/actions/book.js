@@ -64,17 +64,17 @@ function showBookDetail ({commit}, url) {
 /*
 * 通过ID搜索
 * */
-export const getBookDetail = (store, id) => {
-  return showBookDetail(store, base + '/' + id)
+export const getBookDetail = ({state, commit}, id) => {
+  return showBookDetail({state, commit}, base + '/' + id + '?pageSize=' + state.book.detail.pageSize)
 }
 
 /*
  * 通过关键字搜索
  * */
-export const getBookDetailByName = (store, book) => {
+export const getBookDetailByName = ({state, commit}, book) => {
   const {name, href, source} = book
-  let url = base + '/new?name=' + encodeURIComponent(name) + '&link=' + encodeURIComponent(href) + '&source=' + encodeURIComponent(source)
-  return showBookDetail(store, url)
+  let url = base + '/new?name=' + encodeURIComponent(name) + '&link=' + encodeURIComponent(href) + '&source=' + encodeURIComponent(source) + '&pageSize=' + state.book.detail.pageSize
+  return showBookDetail({state, commit}, url)
 }
 
 export const getBookContent = ({state, commit}, {id, index}) => {

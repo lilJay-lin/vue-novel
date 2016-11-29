@@ -1,22 +1,109 @@
 
-// Collections
-.collection {
-  .collection-item {
+/*
+ 图书
+*/
+.book-wrapper{
+  padding: 10px 15px;
+  margin-bottom: 20px;
+}
+.book{
+  display: flex;
+  p{
+    margin: 0;
+  }
+}
+.book-logo{
+  margin-right: 15px;
+  width: 72px;
+  height: 90px;
+}
+.book-info{
+  flex: 1;
+  width: 0;
+}
+.book-title{
 
-    // Avatar Collection
-    &.avatar.book {
-      min-height: 110px;
-      padding-left: 102px;
-      text-align: left;
-      .square {
-        position: absolute;
-        width: 72px;
-        height: 90px;
-        overflow: hidden;
-        left: 15px;
-        display: inline-block;
-        vertical-align: middle;
-      }
-    }
+}
+.book-latest{
+
+}
+.book-desc{
+  text-overflow: ellipsis;
+  display: -webkit-box;
+  -webkit-box-orient: vertical;
+  -webkit-line-clamp: 3;
+  overflow: hidden;
+}
+
+/*
+  阅读器
+*/
+.reader{
+  padding: 10px 20px;
+}
+.reader-title{
+  font-size: 1.4rem;
+  text-align: center;
+}
+.reader-content{
+
+}
+
+/*
+  加载容器
+*/
+.loading-wrapper{
+  overflow: hidden;
+  .loading, .error{
+    text-align: center;
+    margin-top: 30%;
+  }
+}
+/*
+ 搜索框
+*/
+$border-color: #cccccc;
+$z-index: 1;
+/*输入+图标+按钮*/
+.search-box-wrapper{
+  position: relative;
+  height: 55px;
+}
+.search-box{
+  position: fixed;
+  z-index: $z-index + 5;
+  top:0;
+  left:0;
+  right:0;
+  overflow: hidden;
+  margin:10px 15px;
+  padding: 0 15px;
+  display: flex;
+  border-radius:1000px;
+  border: 1px solid #cccccc;
+}
+input.search-input{
+  display: inline-block;
+  flex:1;
+  height: 35px;
+  width:0%;
+  border:0;
+  margin: 0;
+  &:focus:not([readonly]){
+    border:0;
+    outline: 0;
+    box-shadow: none;
+  }
+}
+.search-btn{
+  position: relative;
+  display: inline-block;
+  width: 35px;
+  height: 35px;
+  i {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate3d(-50%, -50%, 0);
   }
 }
