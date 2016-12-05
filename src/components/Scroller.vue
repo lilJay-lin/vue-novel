@@ -4,7 +4,7 @@
       @touchmove="touchMove"
       @touchend="touchEnd"
       ref="container">
-    <div class="scroll_content" :id="contentId">
+    <div class="scroll_content" :id="contentId" ref="content">
       <slot></slot>
     </div>
   </div>
@@ -33,6 +33,13 @@
       height: {
         type: String,
         default: '100%'
+      },
+      startLoadingData: Function
+    },
+    data () {
+      return {
+        offsetWidth: 0,
+        offsetHeight: 0
       }
     },
     computed: {
@@ -50,6 +57,9 @@
       let $container = vm.$refs.container
       $container.style.width = vm.containerWidth
       $container.style.height = vm.containerHeight
+      let rect = $container.getBoundingClientRect()
+      this.offsetWidth = rect.width
+      this.offsetHeight = rect.height
     }
   }
 </script>

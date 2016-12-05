@@ -1,6 +1,6 @@
 <template>
   <Loading>
-    <Scroller>
+    <Scroller :width="width" :height="height" :startLoadingData="starLoadingData">
       <div class="book-wrapper">
         <div class="book">
           <img :src="detail.image" alt="" class="book-logo"/>
@@ -32,15 +32,26 @@
     components: {
       Scroller
     },
+    data () {
+      let doc = document.documentElement
+      return {
+        width: doc.clientWidth.toString(),
+        height: doc.clientHeight.toString()
+      }
+    },
     methods: {
-      ...mapActions(['getBookDetail']),
+      ...mapActions(['getBookDetail', 'getNextPageChapters']),
       showChapterContent (chapter) {
         let vm = this
         vm.$router.push({name: 'bookChapter', params: {bookId: vm.$route.params.bookId, chapterIndex: chapter}})
       },
       fetchData () {
         let vm = this
-        return vm.getBookDetail(vm.$route.params.bookId)
+        return vm.getBookDetail({id: vm.$route.params.bookId})
+      },
+      starLoadingData () {
+        console.log(1)
+        return this.getNextPageChapters()
       }
     }
   }

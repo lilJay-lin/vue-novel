@@ -18,24 +18,24 @@ export const getAllBooks = ({commit}) => {
 }
 
 /*
-export const getBookDetail = ({state, commit}, id) => {
-  let books = state.book.list
-  index = parseInt(index, 10)
-  if (isNaN(index) || books.length <= index || index < 0) {
-    return Promise.reject({message: '找不到图书信息'})
-  }
-  const {name, link, source} = state.book.list[index]
-  return server.request({
-    url: base + '/' + encodeURIComponent(name) + '?link=' + encodeURIComponent(link) + '&source=' + encodeURIComponent(source)
-  }).then(({res: {book}}) => {
-    commit(types.RECEIVE_BOOK_DETAIL, {
-      detail: book
-    })
-  }, (res) => {
-    return Promise.reject(res)
-  })
-}
-*/
+ export const getBookDetail = ({state, commit}, id) => {
+ let books = state.book.list
+ index = parseInt(index, 10)
+ if (isNaN(index) || books.length <= index || index < 0) {
+ return Promise.reject({message: '找不到图书信息'})
+ }
+ const {name, link, source} = state.book.list[index]
+ return server.request({
+ url: base + '/' + encodeURIComponent(name) + '?link=' + encodeURIComponent(link) + '&source=' + encodeURIComponent(source)
+ }).then(({res: {book}}) => {
+ commit(types.RECEIVE_BOOK_DETAIL, {
+ detail: book
+ })
+ }, (res) => {
+ return Promise.reject(res)
+ })
+ }
+ */
 export const searchBook = ({state, commit}, name) => {
   return server.request({
     url: base + '/search/' + name
@@ -48,11 +48,11 @@ export const searchBook = ({state, commit}, name) => {
   })
 }
 
-function showBookDetail ({commit}, url) {
+function showBookDetail ({commit}, {url, type = types.RECEIVE_BOOK_DETAIL}) {
   return server.request({
     url
   }).then(({res: {book}}) => {
-    commit(types.RECEIVE_BOOK_DETAIL, {
+    commit(type, {
       detail: book
     })
     return book
@@ -62,10 +62,13 @@ function showBookDetail ({commit}, url) {
 }
 
 /*
-* 通过ID搜索
-* */
-export const getBookDetail = ({state, commit}, id) => {
-  return showBookDetail({state, commit}, base + '/' + id + '?pageSize=' + state.book.detail.pageSize)
+ * 通过ID搜索
+ * */
+export const getBookDetail = ({state, commit}, {id, page = 1, type = types.RECEIVE_BOOK_DETAIL}) => {
+  return showBookDetail({state, commit}, {
+    url: base + '/' + id + '?pageSize=' + state.book.detail.pageSize + '&page=' + page,
+    type
+  })
 }
 
 /*
@@ -74,7 +77,7 @@ export const getBookDetail = ({state, commit}, id) => {
 export const getBookDetailByName = ({state, commit}, book) => {
   const {name, href, source} = book
   let url = base + '/new?name=' + encodeURIComponent(name) + '&link=' + encodeURIComponent(href) + '&source=' + encodeURIComponent(source) + '&pageSize=' + state.book.detail.pageSize
-  return showBookDetail({state, commit}, url)
+  return showBookDetail({state, commit}, {url})
 }
 
 export const getBookContent = ({state, commit}, {id, index}) => {
@@ -92,8 +95,20 @@ export const getBookContent = ({state, commit}, {id, index}) => {
 }
 
 /*
-* todo：请求服务器
-* */
+ * todo：请求服务器
+ * */
 export const deleteBook = ({commit}, index) => {
   commit(types.DEL_BOOK_ITEM, {index})
+}
+
+/*
+ * 请求下一页章节目录
+ * */
+export const getNextPageChapters = ({state, commit}) => {
+  let detail = state.book.detail
+  return getBookDetail({state, commit}, {
+    id: detail.id,
+    page: detail.page + 1,
+    type: types.RECEIVE_NEXT_PAGE_CHAPTERS
+  })
 }

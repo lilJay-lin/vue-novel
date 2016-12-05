@@ -59,6 +59,10 @@ const mutations = {
         state.reader[key] = val
       }
     })
+  },
+  [types.RECEIVE_NEXT_PAGE_CHAPTERS] (state, {detail}) {
+    state.detail.chapters = state.detail.chapters.concat(detail.chapters)
+    state.detail.page = detail.page
   }
 }
 
