@@ -108,7 +108,8 @@ export const getNextPageChapters = ({state, commit}) => {
   let detail = state.book.detail
   return getBookDetail({state, commit}, {
     id: detail.id,
-    page: detail.page + 1,
+    page: parseInt(detail.page, 10) + 1,
     type: types.RECEIVE_NEXT_PAGE_CHAPTERS
   })
 }
+

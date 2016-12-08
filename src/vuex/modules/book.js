@@ -17,6 +17,8 @@ const state = {
     update: '',
     description: '',
     chapterName: '',
+    latest: '',
+    latestLink: '',
     chapters: [],
     page: 1,
     pageSize: 20,

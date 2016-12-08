@@ -1,6 +1,6 @@
 <template>
   <Loading>
-    <Scroller :width="width" :height="height" :startLoadingData="starLoadingData">
+    <Scroller :startLoadingData="starLoadingData">
       <div class="book-wrapper">
         <div class="book">
           <img :src="detail.image" alt="" class="book-logo"/>
@@ -32,13 +32,6 @@
     components: {
       Scroller
     },
-    data () {
-      let doc = document.documentElement
-      return {
-        width: doc.clientWidth.toString(),
-        height: doc.clientHeight.toString()
-      }
-    },
     methods: {
       ...mapActions(['getBookDetail', 'getNextPageChapters']),
       showChapterContent (chapter) {
@@ -50,7 +43,6 @@
         return vm.getBookDetail({id: vm.$route.params.bookId})
       },
       starLoadingData () {
-        console.log(1)
         return this.getNextPageChapters()
       }
     }

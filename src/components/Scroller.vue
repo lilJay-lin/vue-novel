@@ -28,11 +28,17 @@
       },
       width: {
         type: String,
-        default: '100%'
+        default () {
+          let doc = document.documentElement
+          return doc.clientWidth.toString()
+        }
       },
       height: {
         type: String,
-        default: '100%'
+        default () {
+          let doc = document.documentElement
+          return doc.clientHeight.toString()
+        }
       },
       startLoadingData: Function
     },

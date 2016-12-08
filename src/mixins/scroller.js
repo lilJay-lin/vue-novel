@@ -31,6 +31,7 @@ export default {
       let rect = this.$refs.content.getBoundingClientRect()
       if (rect.height + rect.top - this.height < distance) {
         loading = 1
+        isMove = 0
         this.startLoadingData().then(() => {
           loading = 0
         }).catch(() => {
