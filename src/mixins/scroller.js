@@ -4,6 +4,9 @@
 let isMove = 0
 let loading = 0
 let distance = 100
+let start = {x: 0, y: 0}
+let rect = null
+let moveDis = 0
 export default {
   methods: {
     touchStart (e) {
@@ -11,12 +14,31 @@ export default {
         return
       }
       isMove = 1
+      e = e.touches[0]
+      start.x = e.pageX
+      start.y = e.pageY
+      rect = this.$refs.content.getBoundingClientRect()
+      console.dir(rect)
     },
     touchMove (e) {
-      this.checkLoading()
+      if (isMove === 0 || loading === 1) {
+        return
+      }
+      if (e.changedTouches.length === 0) {
+        return
+      }
+      e = e.changedTouches[0]
+      moveDis = rect.height + rect.top - this.height - start.y - e.pageY
+      if (moveDis < 0) {
+        this.refreshPushEnable = true
+        if (rect.bottom === 0) {
+          this.startRefreshPushLoading = true
+        }
+      } else {
+        this.refreshPushEnable = false
+      }
     },
     touchEnd (e) {
-      this.checkLoading()
     },
     widthAndHeightCoerce (v) {
       if (v[v.length - 1] !== '%') {

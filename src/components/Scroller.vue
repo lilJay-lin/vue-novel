@@ -7,6 +7,14 @@
     <div class="scroll_content" :id="contentId" ref="content">
       <slot></slot>
     </div>
+    <div class="refresh-push" v-if="refreshPushEnable">
+      <template v-if="startRefreshPushLoading">
+        <p>刷新数据，请稍后</p>
+      </template>
+      <template v-else>
+        <p>上拉刷新</p>
+      </template>
+    </div>
   </div>
 </template>
 <script type="text/ecmascript-6">
@@ -45,7 +53,9 @@
     data () {
       return {
         offsetWidth: 0,
-        offsetHeight: 0
+        offsetHeight: 0,
+        refreshPushEnable: false,
+        startRefreshPushLoading: false
       }
     },
     computed: {
