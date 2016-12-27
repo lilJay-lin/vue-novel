@@ -3,42 +3,68 @@
  */
 let isMove = 0
 let loading = 0
-let distance = 100
 let start = {x: 0, y: 0}
 let rect = null
 let moveDis = 0
+let refreshBarHeight = 60
+let startLoadingDisRadio = 0.8
 export default {
   methods: {
     touchStart (e) {
-      if (e.target.tagName.match(/input|textarea|select/i)) {
+      if (!this.refreshPushEnable || e.target.tagName.match(/input|textarea|select/i)) {
         return
       }
       isMove = 1
       e = e.touches[0]
-      start.x = e.pageX
-      start.y = e.pageY
-      rect = this.$refs.content.getBoundingClientRect()
-      console.dir(rect)
+      this.refreshCompute(e)
     },
     touchMove (e) {
-      if (isMove === 0 || loading === 1) {
+      if (!this.refreshPushEnable || isMove === 0 || loading === 1) {
         return
       }
       if (e.changedTouches.length === 0) {
         return
       }
       e = e.changedTouches[0]
-      moveDis = rect.height + rect.top - this.height - start.y - e.pageY
+      moveDis = rect.height + rect.top - this.height - (start.y - e.pageY)
       if (moveDis < 0) {
-        this.refreshPushEnable = true
-        if (rect.bottom === 0) {
-          this.startRefreshPushLoading = true
+        this.showRefreshPush = true
+        /*
+        * 出现刷新提示
+        * else
+        * 隐藏刷新提示
+        * */
+        if (Math.abs(moveDis) >= startLoadingDisRadio * refreshBarHeight) {
+          this.showRefreshPushLoading = true
+        } else {
+          this.showRefreshPushLoading = false
+        }
+        /*
+         * 滑动到达底部，更新start和rect
+         * */
+        if (Math.abs(moveDis) > refreshBarHeight) {
+          this.refreshCompute(e)
         }
       } else {
-        this.refreshPushEnable = false
+        this.showRefreshPush = false
+        this.showRefreshPushLoading = false
+      }
+    },
+    refreshCompute (e) {
+      rect = this.$refs.content.getBoundingClientRect()
+      start = {
+        x: e.pageX,
+        y: e.pageY
       }
     },
     touchEnd (e) {
+      if (!this.startRefresh && this.showRefreshPushLoading) {
+        this.refreshPushEnable = false
+        this.startRefresh = true
+        this.$refs.container.scrollTop = rect.height + refreshBarHeight - this.height
+      } else {
+        this.showRefreshPush = false
+      }
     },
     widthAndHeightCoerce (v) {
       if (v[v.length - 1] !== '%') {
@@ -46,18 +72,30 @@ export default {
       }
       return v
     },
-    checkLoading () {
-      if (isMove === 0 || loading === 1) {
-        return
-      }
-      let rect = this.$refs.content.getBoundingClientRect()
-      if (rect.height + rect.top - this.height < distance) {
-        loading = 1
-        isMove = 0
-        this.startLoadingData().then(() => {
-          loading = 0
-        }).catch(() => {
-          loading = 0
+    reload () {
+      let vm = this
+      vm.showRefreshPush = true
+      vm.showRefreshPushLoading = true
+      vm.refreshPushError = false
+      vm.startRefresh = true
+    }
+  },
+  watch: {
+    startRefresh (val) {
+      if (val) {
+        let vm = this
+        vm.startLoadingData().then(() => {
+          vm.refreshPushEnable = true
+          vm.showRefreshPush = false
+          vm.showRefreshPushLoading = false
+          vm.startRefresh = false
+          vm.refreshPushError = false
+        }, () => {
+          vm.refreshPushEnable = false
+          vm.showRefreshPush = true
+          vm.showRefreshPushLoading = false
+          vm.refreshPushError = true
+          vm.startRefresh = false
         })
       }
     }

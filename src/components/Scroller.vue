@@ -1,18 +1,21 @@
 <template>
   <div class="scroll_container" :id="containerId"
-      @touchstart="touchStart"
-      @touchmove="touchMove"
-      @touchend="touchEnd"
-      ref="container">
+       @touchstart="touchStart"
+       @touchmove="touchMove"
+       @touchend="touchEnd"
+       ref="container">
     <div class="scroll_content" :id="contentId" ref="content">
       <slot></slot>
     </div>
-    <div class="refresh-push" v-if="refreshPushEnable">
-      <template v-if="startRefreshPushLoading">
-        <p>刷新数据，请稍后</p>
+    <div class="refresh-push" v-if="showRefreshPush">
+      <template v-if="refreshPushError">
+        <p @click="reload">数据加载失败，点击重试</p>
       </template>
       <template v-else>
-        <p>上拉刷新</p>
+        <div>
+          <p v-if="showRefreshPushLoading">数据加载中，请稍后</p>
+          <p v-else>上拉刷新</p>
+        </div>
       </template>
     </div>
   </div>
@@ -54,8 +57,11 @@
       return {
         offsetWidth: 0,
         offsetHeight: 0,
-        refreshPushEnable: false,
-        startRefreshPushLoading: false
+        refreshPushEnable: true,
+        showRefreshPush: false,
+        showRefreshPushLoading: false,
+        startRefresh: false,
+        refreshPushError: false
       }
     },
     computed: {
