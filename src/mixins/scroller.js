@@ -2,7 +2,6 @@
  * Created by linxiaojie on 2016/12/1.
  */
 let isMove = 0
-let loading = 0
 let start = {x: 0, y: 0}
 let rect = null
 let moveDis = 0
@@ -19,7 +18,7 @@ export default {
       this.refreshCompute(e)
     },
     touchMove (e) {
-      if (!this.refreshPushEnable || isMove === 0 || loading === 1) {
+      if (!this.refreshPushEnable || isMove === 0) {
         return
       }
       if (e.changedTouches.length === 0) {
@@ -50,20 +49,21 @@ export default {
         this.showRefreshPushLoading = false
       }
     },
-    refreshCompute (e) {
-      rect = this.$refs.content.getBoundingClientRect()
-      start = {
-        x: e.pageX,
-        y: e.pageY
-      }
-    },
     touchEnd (e) {
       if (!this.startRefresh && this.showRefreshPushLoading) {
         this.refreshPushEnable = false
         this.startRefresh = true
         this.$refs.container.scrollTop = rect.height + refreshBarHeight - this.height
-      } else {
+      } else if (isMove) {
         this.showRefreshPush = false
+      }
+      isMove = moveDis = 0
+    },
+    refreshCompute (e) {
+      rect = this.$refs.content.getBoundingClientRect()
+      start = {
+        x: e.pageX,
+        y: e.pageY
       }
     },
     widthAndHeightCoerce (v) {
@@ -72,11 +72,11 @@ export default {
       }
       return v
     },
-    reload () {
+    reload (e) {
       let vm = this
       vm.showRefreshPush = true
-      vm.showRefreshPushLoading = true
       vm.refreshPushError = false
+      vm.showRefreshPushLoading = true
       vm.startRefresh = true
     }
   },

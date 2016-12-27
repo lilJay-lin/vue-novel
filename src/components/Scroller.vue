@@ -11,11 +11,11 @@
       <template v-if="refreshPushError">
         <p @click="reload">数据加载失败，点击重试</p>
       </template>
-      <template v-else>
-        <div>
-          <p v-if="showRefreshPushLoading">数据加载中，请稍后</p>
-          <p v-else>上拉刷新</p>
-        </div>
+      <template  v-if="showRefreshPushLoading">
+        <p >数据加载中，请稍后</p>
+      </template>
+      <template v-if="!(showRefreshPushLoading || refreshPushError)">
+        <p>上拉刷新</p>
       </template>
     </div>
   </div>
