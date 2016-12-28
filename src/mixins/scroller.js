@@ -50,6 +50,10 @@ export default {
       }
     },
     touchEnd (e) {
+      /*
+      * 1. 非刷新状态并且显示正在刷新，开始刷新请求并设置不允许上拉刷新
+      * 2. 非触摸移动状态，隐藏刷新指示栏
+      * */
       if (!this.startRefresh && this.showRefreshPushLoading) {
         this.refreshPushEnable = false
         this.startRefresh = true
@@ -59,6 +63,9 @@ export default {
       }
       isMove = moveDis = 0
     },
+    /*
+    * 刷新当前出点坐标和内容rect状态
+    * */
     refreshCompute (e) {
       rect = this.$refs.content.getBoundingClientRect()
       start = {
@@ -72,6 +79,9 @@ export default {
       }
       return v
     },
+    /*
+    * 触发重新刷新
+    * */
     reload (e) {
       let vm = this
       vm.showRefreshPush = true
@@ -81,6 +91,9 @@ export default {
     }
   },
   watch: {
+    /*
+    * 开始发送刷新请求
+    * */
     startRefresh (val) {
       if (val) {
         let vm = this
