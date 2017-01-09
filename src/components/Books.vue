@@ -6,8 +6,10 @@
     <Loading>
       <template v-if="books">
         <ul class="collection">
-          <li v-for="(book, index) in books" class="collection-item" :key="index">
+          <li v-if="books.length === 0" class="collection-none">暂无数据</li>
+          <li v-for="(book, index) in books" class="collection-item" :key="index" v-else>
             <div @click="showBookDetail(book.id)" class="book">
+              <a href="javascript:void(0)" class="del" @click.stop="deleteBook(book.id, index)"></a>
               <img :src="book.image" alt="" class="book-logo"/>
               <div class="book-info">
                 <p class="book-title">{{book.name}}</p>

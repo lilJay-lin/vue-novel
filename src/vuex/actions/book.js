@@ -97,8 +97,17 @@ export const getBookContent = ({state, commit}, {id, index}) => {
 /*
  * todo：请求服务器
  * */
-export const deleteBook = ({commit}, index) => {
+export const deleteBook = ({state, commit}, id, index) => {
   commit(types.DEL_BOOK_ITEM, {index})
+  return server.request({
+    url: base + '/' + id,
+    method: 'delete'
+  }).then((res) => {
+    return Promise.resolve(res)
+  }, ({message}) => {
+    alert(message)
+    window.location.reload()
+  })
 }
 
 /*
