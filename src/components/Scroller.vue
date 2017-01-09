@@ -4,28 +4,28 @@
        @touchmove="touchMove"
        @touchend="touchEnd"
        ref="container">
-    <div class="refresh-push" v-if="showRefreshPull">
-      <template v-if="refreshError">
+    <div class="refresh-push" v-show="showRefreshPull">
+      <template v-show="refreshError">
         <p @click="reload">数据加载失败，点击重试</p>
       </template>
-      <template  v-if="refreshRefreshLoading">
+      <template  v-show="refreshRefreshLoading">
         <p >数据加载中，请稍后</p>
       </template>
-      <template v-if="!(refreshRefreshLoading || refreshError)">
+      <template v-show="!(refreshRefreshLoading || refreshError)">
         <p>上拉刷新</p>
       </template>
     </div>
     <div class="scroll_content" :id="contentId" ref="content">
       <slot></slot>
     </div>
-    <div class="refresh-push" v-if="showRefreshPush">
-      <template v-if="refreshError">
+    <div class="refresh-push" v-show="showRefreshPush">
+      <template v-show="refreshError">
         <p @click="reload">数据加载失败，点击重试</p>
       </template>
-      <template  v-if="refreshRefreshLoading">
+      <template  v-show="refreshRefreshLoading">
         <p >数据加载中，请稍后</p>
       </template>
-      <template v-if="!(refreshRefreshLoading || refreshError)">
+      <template v-show="!(refreshRefreshLoading || refreshError)">
         <p>上拉刷新</p>
       </template>
     </div>
