@@ -1,6 +1,6 @@
 <template>
   <Loading>
-    <Scroller :startLoadingData="starLoadingData">
+    <Scroller :startLoadingData="starLoadingData" :canPullRefresh="canPullRefresh">
       <div class="book-wrapper">
         <div class="book">
           <img :src="detail.image" alt="" class="book-logo"/>
@@ -32,6 +32,11 @@
     components: {
       Scroller
     },
+    data () {
+      return {
+        canPullRefresh: false
+      }
+    },
     methods: {
       ...mapActions(['getBookDetail', 'getNextPageChapters']),
       showChapterContent (chapter) {
@@ -43,6 +48,10 @@
         return vm.getBookDetail({id: vm.$route.params.bookId})
       },
       starLoadingData () {
+        if (this.detail.last) {
+          alert('已经是最后一页了')
+          return Promise.resolve(1)
+        }
         return this.getNextPageChapters()
       }
     }

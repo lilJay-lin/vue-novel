@@ -1,6 +1,6 @@
 <template>
   <Loading>
-    <Scroller :startLoadingData="getNextBookContent">
+    <Scroller :startLoadingData="getNextBookContent" ref="scroller">
       <div class="reader">
         <h3 class="reader-title">{{reader.name}}</h3>
         <div class="reader-content flow-text" v-html="reader.text"></div>
@@ -29,7 +29,21 @@
       },
       getNextBookContent () {
         let vm = this
-        let index = parseInt(vm.$route.params.chapterIndex, 10) + 1
+        let index = parseInt(vm.$route.params.chapterIndex, 10)
+        let scroller = vm.$refs.scroller
+        if (scroller.showRefreshPull) {
+          if (vm.reader.first) {
+            alert('已经是第一章了')
+            return Promise.resolve(1)
+          }
+          index = index - 1
+        } else if (scroller.showRefreshPush) {
+          if (vm.reader.last) {
+            alert('已经是最后一章了')
+            return Promise.resolve(1)
+          }
+          index = index + 1
+        }
         return vm.getBookContent({
           id: vm.$route.params.bookId,
           index

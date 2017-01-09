@@ -21,14 +21,18 @@ const state = {
     latestLink: '',
     chapters: [],
     page: 1,
-    pageSize: 20,
-    totalPage: 0
+    pageSize: 10,
+    totalPage: 0,
+    last: false
   },
   reader: {
     name: '',
     title: '',
-    index: '',
-    text: ''
+    index: 1,
+    text: '',
+    totalChapter: 1,
+    first: false,
+    last: false
   },
   search: {
     list: []
@@ -56,15 +60,19 @@ const mutations = {
     state.list.splice(index, 1)
   },
   [types.RECEIVE_BOOK_CONTENT] (state, {content}) {
+    let reader = state.reader
     _.each(content, (val, key) => {
-      if (_.has(state.reader, key)) {
-        state.reader[key] = val
+      if (_.has(reader, key)) {
+        reader[key] = val
       }
     })
+    reader.first = reader.index === 1
+    reader.last = reader.index === reader.total
   },
   [types.RECEIVE_NEXT_PAGE_CHAPTERS] (state, {detail}) {
     state.detail.chapters = state.detail.chapters.concat(detail.chapters)
     state.detail.page = detail.page
+    state.detail.last = detail.page === detail.totalPage
   }
 }
 
