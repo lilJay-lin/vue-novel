@@ -62,7 +62,15 @@
           return doc.clientHeight.toString()
         }
       },
-      startLoadingData: Function
+      startLoadingData: Function,
+      canPullRefresh: {
+        type: Boolean,
+        default: true
+      },
+      canPushRefresh: {
+        type: Boolean,
+        default: true
+      }
     },
     data () {
       return {

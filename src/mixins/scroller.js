@@ -27,20 +27,20 @@ export default {
       e = e.changedTouches[0]
       let pushDis = rect.height + rect.top - this.height - (start.y - e.pageY)
       let pullDis = e.pageY - start.y + rect.top
-      this.showRefreshPush = this.refreshEnable && pushDis < 0
+      this.showRefreshPush = this.refreshEnable && pushDis < 0 && this.canPushRefresh
       /*
        * TODO: 目前依赖原生scroll，下拉操作指示栏的出现，需要做特殊处理，后期可改成transform
        * */
-      if (this.refreshEnable && pullDis > 0) {
+      if (this.refreshEnable && pullDis > 0 && this.canPushRefresh) {
         if (!this.showRefreshPull) {
           this.$refs.container.scrollTop = rect.top + refreshBarHeight
         }
         this.showRefreshPull = true
       } else {
         /*
-        * 如果此刻把showRefreshPull 设置为false , 顶部拉下隐藏，回造成页面在触摸期间往上收缩比较明显
-        * 等待touchEnd的时候再做隐藏
-        * */
+         * 如果此刻把showRefreshPull 设置为false , 顶部拉下隐藏，回造成页面在触摸期间往上收缩比较明显
+         * 等待touchEnd的时候再做隐藏
+         * */
         pullDis = 0
       }
       moveDis = this.showRefreshPull ? pullDis : this.showRefreshPush ? pushDis : 0
@@ -86,8 +86,8 @@ export default {
         }
       } else if (isMove) {
         /*
-        * 隐藏顶部，重置scrollTop到合适位置
-        * */
+         * 隐藏顶部，重置scrollTop到合适位置
+         * */
         if (this.showRefreshPull) {
           this.$refs.container.scrollTop = this.$refs.container.scrollTop - refreshBarHeight
         }
